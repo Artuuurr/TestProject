@@ -32,8 +32,7 @@ function App() {
 
 	const editUser = user => {
 		console.log(user)
-		let allUsers = [...state.users]
-		allUsers[user.id - 1] = user
+		let allUsers = state.users.map(u => (u.id === user.id ? user : u))
 
 		setState(prevState => ({ ...prevState, users: [] }))
 		setState(prevState => ({ ...prevState, users: allUsers }))
@@ -41,7 +40,9 @@ function App() {
 
 	const addUser = user => {
 		console.log(user)
-		const id = state.users.length + 1
+		const maxId =
+			state.users.length > 0 ? Math.max(...state.users.map(u => u.id)) : 0
+		const id = maxId + 1
 		setState({ users: [...state.users, { id, ...user }] })
 	}
 	return (
